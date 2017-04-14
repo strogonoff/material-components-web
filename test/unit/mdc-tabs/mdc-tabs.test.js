@@ -18,8 +18,6 @@ import {assert} from 'chai';
 import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
-import {createMockRaf} from '../helpers/raf';
-import {strings} from '../../../packages/mdc-tabs/tabs/constants';
 import {MDCTabs} from '../../../packages/mdc-tabs/tabs';
 
 function getFixture() {
@@ -63,14 +61,10 @@ test('adapter#removeClass removes a class from the root element', () => {
 
 test('adapter#bindOnMDCTabSelectedEvent listens for MDCTab:selected on ' +
      'the component', () => {
-  const {root, component, fixture} = setupTest();
-
-  const tabSelectedHandler = td.func('tabSelectedHandler')
+  const {component, fixture} = setupTest();
 
   component.getDefaultFoundation().adapter_.bindOnMDCTabSelectedEvent();
   domEvents.emit(fixture, 'MDCTab:selected');
-
-  // TODO: sheehana
 });
 
 test('adapter#unbindOnMDCTabSelectedEvent removes listener from component', () => {
@@ -169,7 +163,7 @@ test('adapter#isDefault PreventedOnClickForTabAtIndex returns the value ' +
 
   component.tabs[targetIndex].preventDefaultOnClick = true;
 
-  assert.isTrue(component.getDefaultFoundation().adapter_.isDefaultPreventedOnClickForTabAtIndex(targetIndex))
+  assert.isTrue(component.getDefaultFoundation().adapter_.isDefaultPreventedOnClickForTabAtIndex(targetIndex));
 });
 
 test('adapter#setPreventDefaultOnClickForTabAtIndex sets preventDefault ' +
@@ -177,7 +171,7 @@ test('adapter#setPreventDefaultOnClickForTabAtIndex sets preventDefault ' +
   const {component} = setupTest();
   const targetIndex = 0;
 
-  component.getDefaultFoundation().adapter_.setPreventDefaultOnClickForTabAtIndex(targetIndex, true)
+  component.getDefaultFoundation().adapter_.setPreventDefaultOnClickForTabAtIndex(targetIndex, true);
 
   assert.isTrue(component.tabs[targetIndex].preventDefaultOnClick);
 });

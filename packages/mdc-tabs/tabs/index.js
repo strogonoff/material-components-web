@@ -73,7 +73,8 @@ export class MDCTabs extends MDCComponent {
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       bindOnMDCTabSelectedEvent: () => this.root_.addEventListener('MDCTab:selected', this.tabSelectedHandler_, true),
-      unbindOnMDCTabSelectedEvent: () => this.root_.removeEventListener('MDCTab:selected', this.tabSelectedHandler_, true),
+      unbindOnMDCTabSelectedEvent: () =>
+        this.root_.removeEventListener('MDCTab:selected', this.tabSelectedHandler_, true),
       registerResizeHandler: (handler) => window.addEventListener('resize', handler),
       deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
       getOffsetWidth: () => this.root_.offsetWidth,

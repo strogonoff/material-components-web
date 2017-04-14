@@ -16,7 +16,6 @@
 
 import MDCComponent from '@material/base/component';
 
-import {strings} from './constants';
 import MDCTabsScrollerFoundation from './foundation';
 
 export {MDCTabsScrollerFoundation};
@@ -58,13 +57,20 @@ export class MDCTabsScroller extends MDCComponent {
 
   getDefaultFoundation() {
     return new MDCTabsScrollerFoundation({
-      isRTL: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
-      registerLeftIndicatorInteractionHandler: (handler) => this.shiftLeftTarget.addEventListener('click', handler),
-      deregisterLeftIndicatorInteractionHandler: (handler) => this.shiftLeftTarget.removeEventListener('click', handler),
-      registerRightIndicatorInteractionHandler: (handler) => this.shiftRightTarget.addEventListener('click', handler),
-      deregisterRightIndicatorInteractionHandler: (handler) => this.shiftRightTarget.removeEventListener('click', handler),
-      registerWindowResizeHandler: (handler) => window.addEventListener('resize', handler),
-      deregisterWindowResizeHandler: (handler) => window.removeEventListener('resize', handler),
+      isRTL: () =>
+        getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
+      registerLeftIndicatorInteractionHandler: (handler) =>
+        this.shiftLeftTarget.addEventListener('click', handler),
+      deregisterLeftIndicatorInteractionHandler: (handler) =>
+        this.shiftLeftTarget.removeEventListener('click', handler),
+      registerRightIndicatorInteractionHandler: (handler) =>
+        this.shiftRightTarget.addEventListener('click', handler),
+      deregisterRightIndicatorInteractionHandler: (handler) =>
+        this.shiftRightTarget.removeEventListener('click', handler),
+      registerWindowResizeHandler: (handler) =>
+        window.addEventListener('resize', handler),
+      deregisterWindowResizeHandler: (handler) =>
+        window.removeEventListener('resize', handler),
       triggerNewLayout: () => requestAnimationFrame(() => this.layout()),
       scrollLeft: (isRTL) => this.scrollLeft(isRTL),
       scrollRight: (isRTL) => this.scrollRight(isRTL),
@@ -78,8 +84,7 @@ export class MDCTabsScroller extends MDCComponent {
 
     if (isOverflowing) {
       this.tabs.classList.add(MDCTabsScrollerFoundation.cssClasses.VISIBLE);
-    }
-    else {
+    } else {
       this.tabs.classList.remove(MDCTabsScrollerFoundation.cssClasses.VISIBLE);
       this.currentTranslateOffset_ = 0;
       this.shiftFrame_();
@@ -95,14 +100,19 @@ export class MDCTabsScroller extends MDCComponent {
     this.isRTL = isRTL;
 
     for (let i = this.listOfTabNodes.length - 1, tab; tab = this.listOfTabNodes[i]; i--) {
-      if (tab.offsetLeft >= this.currentTranslateOffset_) {
+      const tabOffsetX = this.isRTL ?
+        this.getRTLNormalizedOffsetLeftForTab_(tab) : tab.offsetLeft;
+
+      if (tabOffsetX >= this.currentTranslateOffset_) {
         continue;
       }
 
       tabWidthAccumulator += tab.offsetWidth;
 
       if (tabWidthAccumulator > this.scrollFrame.offsetWidth) {
-        scrollTarget = this.listOfTabNodes[this.listOfTabNodes.indexOf(tab) + 1];
+        scrollTarget = this.isRTL ?
+          this.listOfTabNodes[this.listOfTabNodes.indexOf(tab) + 1] :
+          this.listOfTabNodes[this.listOfTabNodes.indexOf(tab) - 1];
         break;
       }
     }
@@ -116,31 +126,17 @@ export class MDCTabsScroller extends MDCComponent {
 
   scrollRight(isRTL) {
     let scrollTarget;
-    let tabWidthAccumulator = 0;
-    const frameOffset = this.computedFrameWidth_ + this.currentTranslateOffset_;
+    const tabsOffset = this.computedFrameWidth_ + this.currentTranslateOffset_;
 
     this.isRTL = isRTL;
 
-    if (!isRTL) {
-      for (let tab of this.listOfTabNodes) {
-        if (tab.offsetLeft + tab.offsetWidth >= frameOffset) {
-          scrollTarget = tab;
-          break;
-        }
-      }
-    }
-    else {
-      for (let tab of this.listOfTabNodes) {
-        if (tab.offsetLeft <= this.currentTranslateOffset_) {
-          continue;
-        }
+    for (const tab of this.listOfTabNodes) {
+      const tabOffsetX = this.isRTL ?
+        this.getRTLNormalizedOffsetLeftForTab_(tab) : tab.offsetLeft;
 
-        tabWidthAccumulator += tab.offsetWidth;
-
-        if (tabWidthAccumulator > this.scrollFrame.offsetWidth) {
-          scrollTarget = this.listOfTabNodes[this.listOfTabNodes.indexOf(tab) - 1];
-          break;
-        }
+      if (tabOffsetX + tab.offsetWidth >= tabsOffset) {
+        scrollTarget = tab;
+        break;
       }
     }
 
@@ -152,13 +148,17 @@ export class MDCTabsScroller extends MDCComponent {
   }
 
   scrollToTab(tab) {
-    this.currentTranslateOffset_ = this.isRTL ? this.tabs.offsetWidth - tab.offsetLeft : tab.offsetLeft;
+    this.currentTranslateOffset_ = this.isRTL ?
+      this.tabs.offsetWidth - (tab.offsetLeft + tab.offsetWidth) :
+      tab.offsetLeft;
     requestAnimationFrame(() => this.shiftFrame_());
   }
 
-  shiftFrame_() {
-    let rtl = this.isRTL
+  getRTLNormalizedOffsetLeftForTab_(tab) {
+    return this.tabs.offsetWidth - (tab.offsetLeft + tab.offsetWidth);
+  }
 
+  shiftFrame_() {
     const shiftAmount = this.isRTL ?
       this.currentTranslateOffset_ : -this.currentTranslateOffset_;
 
@@ -171,15 +171,13 @@ export class MDCTabsScroller extends MDCComponent {
   updateIndicatorEnabledStates_() {
     if (this.currentTranslateOffset_ === 0) {
       this.shiftLeftTarget.classList.add(MDCTabsScrollerFoundation.cssClasses.INDICATOR_DISABLED);
-    }
-    else {
+    } else {
       this.shiftLeftTarget.classList.remove(MDCTabsScrollerFoundation.cssClasses.INDICATOR_DISABLED);
     }
 
     if (this.currentTranslateOffset_ + this.scrollFrame.offsetWidth > this.tabs.offsetWidth) {
       this.shiftRightTarget.classList.add(MDCTabsScrollerFoundation.cssClasses.INDICATOR_DISABLED);
-    }
-    else {
+    } else {
       this.shiftRightTarget.classList.remove(MDCTabsScrollerFoundation.cssClasses.INDICATOR_DISABLED);
     }
   }

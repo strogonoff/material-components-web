@@ -17,10 +17,8 @@ import {assert} from 'chai';
 import td from 'testdouble';
 
 import {setupFoundationTest} from '../helpers/setup';
-import {verifyDefaultAdapter, captureHandlers} from '../helpers/foundation';
-import {createMockRaf} from '../helpers/raf';
+import {verifyDefaultAdapter} from '../helpers/foundation';
 
-import {cssClasses} from '../../../packages/mdc-tabs/tabs-scroller/constants';
 import MDCTabsScrollerFoundation from '../../../packages/mdc-tabs/tabs-scroller/foundation';
 
 suite('MDCTabsScrollerFoundation');
@@ -36,7 +34,7 @@ test('default adapter returns a complete adapter implementation', () => {
     'registerRightIndicatorInteractionHandler',
     'deregisterRightIndicatorInteractionHandler',
     'registerWindowResizeHandler', 'deregisterWindowResizeHandler',
-    'triggerNewLayout', 'scrollLeft', 'scrollRight'
+    'triggerNewLayout', 'scrollLeft', 'scrollRight',
   ]);
 });
 

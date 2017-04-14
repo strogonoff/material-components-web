@@ -17,10 +17,8 @@ import {assert} from 'chai';
 import td from 'testdouble';
 
 import {setupFoundationTest} from '../helpers/setup';
-import {verifyDefaultAdapter, captureHandlers} from '../helpers/foundation';
-import {createMockRaf} from '../helpers/raf';
+import {verifyDefaultAdapter} from '../helpers/foundation';
 
-import {cssClasses} from '../../../packages/mdc-tabs/tabs/constants';
 import MDCTabsFoundation from '../../../packages/mdc-tabs/tabs/foundation';
 
 suite('MDCTabsFoundation');
@@ -38,7 +36,7 @@ test('default adapter returns a complete adapter implementation', () => {
     'getNumberOfTabs', 'isTabActiveAtIndex', 'setTabActiveAtIndex',
     'isDefaultPreventedOnClickForTabAtIndex',
     'setPreventDefaultOnClickForTabAtIndex', 'measureTabAtIndex',
-    'getComputedWidthForTabAtIndex', 'getComputedLeftForTabAtIndex'
+    'getComputedWidthForTabAtIndex', 'getComputedLeftForTabAtIndex',
   ]);
 });
 

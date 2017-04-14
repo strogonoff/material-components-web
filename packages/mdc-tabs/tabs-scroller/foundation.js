@@ -40,7 +40,7 @@ export default class MDCTabsScrollerFoundation extends MDCFoundation {
       triggerNewLayout: () => {},
       scrollLeft: () => {},
       scrollRight: () => {},
-    }
+    };
   }
 
   constructor(adapter) {

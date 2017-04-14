@@ -48,6 +48,50 @@ https://www.apache.org/licenses/LICENSE-2.0
         bottom: 0;
         margin-left: 20px;
       }
+
+      section + section {
+        margin-top: 40px;
+      }
+
+      .panels {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-top: 8px;
+      }
+
+      .panel {
+        display: none;
+      }
+
+      .panel.active {
+        display: block;
+      }
+
+      .dots {
+        display: flex;
+        justify-content: flex-start;
+        margin-top: 4px;
+        padding-bottom: 16px;
+      }
+
+      .dot {
+        margin-right: 8px;
+        border-radius: 50%;
+        border: 1px solid #ccc;
+        width: 20px;
+        height: 20px;
+      }
+
+      .dot:last-child {
+        margin-right: 0;
+      }
+
+      .dot.active {
+        background-color: blue;
+        border-color: blue;
+      }
+
     </style>
   </head>
   <body class="mdc-typography">

@@ -18,49 +18,14 @@
 @import "@material/typography/mixins";
 @import "@material/theme/mixins";
 @import "@material/rtl/mixins";
+@import "./variables";
+@import "./mixins";
 
 // postcss-bem-linter: define tabs
-// TODO: Focus outline colors for css-only/dark theme toolbar tabs
-
-$md-tabs-text-color: rgba(black, .54);
-$md-tabs-active-text-color: rgba(black, .87);
-$md-tabs-indicator-color: rgba(black, .87);
-$_md-tabs-scroller-indicator-width: 48px;
-
-@mixin icon-tab-content {
-  display: block;
-  margin: 0 auto;
-}
-
-@mixin anchor-reset {
-  color: $md-tabs-text-color;
-  text-decoration: none;
-  cursor: pointer;
-
-  &:hover {
-    color: $md-tabs-active-text-color;
-  }
-
-  &:focus {
-    outline-color: $md-tabs-text-color;
-  }
-}
-
-
-@mixin mdc-typography-body2 {
-  font-family: Roboto, sans-serif;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  font-size: 0.875rem;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  line-height: 1.5rem;
-}
-
 .mdc-tabs {
   display: flex;
-	justify-content: center;
-	flex-direction: row;
+  justify-content: center;
+  flex-direction: row;
   height: 48px;
   margin: 0 auto;
   position: relative;
@@ -69,80 +34,79 @@ $_md-tabs-scroller-indicator-width: 48px;
   &__indicator {
     height: 2px;
     width: 100%;
-    background-color: $md-tabs-indicator-color;
+
+    @include mdc-theme-prop(background-color, text-primary-on-light);
+
     position: absolute;
     bottom: 0;
     left: 0;
     transform-origin: left top;
     transition: transform 240ms cubic-bezier(.4, 0, .2, 1);
     will-change: transform;
-    // Only initially: JS makes it visible and can be overriden if not using javascript
-    // e.g. server-side-rendered active tab.
     visibility: hidden;
   }
 
-  // NOTE: All of these treatments for inside of toolbar should be refactored to use mdc-theme!
+  // postcss-bem-linter: ignore
   .mdc-toolbar & {
-    margin: 0;
+    margin: 0 auto;
+
     .mdc-tab {
-      // text-secondary-on-primary
-      color: rgba(white, .7);
+      @include mdc-theme-prop(color, text-secondary-on-primary);
 
       &--active,
       &:hover {
-        // text-primary-on-primary
-        color: white;
+        @include mdc-theme-prop(color, text-primary-on-primary);
       }
 
       &::before,
       &::after {
-        background-color: rgba(white, .06);
+        @include mdc-theme-prop(background-color, text-primary-on-primary);
       }
     }
 
-
+    // postcss-bem-linter: ignore
     .mdc-tabs__indicator {
       background-color: white;
+
+      @include mdc-theme-prop(background-color, text-primary-on-primary);
     }
   }
 
-	@include mdc-rtl('.mdc-tabs') {
-		flex-direction: reverse-row;
-	}
+  @include mdc-rtl(".mdc-tabs") {
+    flex-direction: reverse-row;
+  }
 }
 
 .mdc-tabs--icons-with-text {
   height: 72px;
 }
 
-// TODO: Add toolbar treatment here and for accent
 .mdc-tabs--indicator-primary,
 .mdc-toolbar .mdc-tabs--indicator-primary {
   .mdc-tabs__indicator {
-    background-color: var(--mdc-theme-primary);
+    @include mdc-theme-prop(background-color, primary);
   }
 
-  // NOTE: mdc-tabs needed for specifity.
   &.mdc-tabs:not(.mdc-tabs-upgraded) .mdc-tab::after {
-    background-color: var(--mdc-theme-primary);
+    @include mdc-theme-prop(background-color, primary);
   }
 }
 
 .mdc-tabs--indicator-accent,
 .mdc-toolbar .mdc-tabs--indicator-accent {
   .mdc-tabs__indicator {
-    background-color: var(--mdc-theme-accent);
+    @include mdc-theme-prop(background-color, accent);
   }
 
-  // NOTE: mdc-tabs needed for specifity.
   &.mdc-tabs:not(.mdc-tabs-upgraded) .mdc-tab::after {
-    background-color: var(--mdc-theme-accent);
+    @include mdc-theme-prop(background-color, accent);
   }
 }
 
+// postcss-bem-linter: ignore
 .mdc-tab {
-  @include anchor-reset;
-  @include mdc-typography-body2;
+  @include mdc-anchor-reset;
+  @include mdc-typography(body2);
 
   box-sizing: border-box;
   display: table-cell;
@@ -153,30 +117,34 @@ $_md-tabs-scroller-indicator-width: 48px;
   text-align: center;
   vertical-align: middle;
 
-  color: $md-tabs-text-color;
+  @include mdc-theme-prop(color, text-secondary-on-light);
+
   cursor: pointer;
   white-space: nowrap;
 
-  // TODO(traviskaufman): Media Queries Library
   @media screen and (max-width: 600px) {
     min-width: 72px;
     padding: 0 12px;
   }
 
+  // postcss-bem-linter: ignore
   &__icon {
-    @include icon-tab-content;
+    @include mdc-icon-tab-content;
+
     width: 24px;
     height: 24px;
 
+    // postcss-bem-linter: ignore
     .mdc-tabs--icons-with-text & {
       margin-top: 4px;
     }
   }
 
   &__icon-text {
-    @include icon-tab-content;
+    @include mdc-icon-tab-content;
   }
 
+  // postcss-bem-linter: ignore
   &__icon + &__icon-text {
     padding-top: 6px;
   }
@@ -184,6 +152,7 @@ $_md-tabs-scroller-indicator-width: 48px;
 
 .mdc-tabs:not(.mdc-tabs-upgraded) .mdc-tab {
   position: relative;
+
   &::after {
     position: absolute;
     left: 2px;
@@ -193,11 +162,11 @@ $_md-tabs-scroller-indicator-width: 48px;
     height: 2px;
     display: none;
     pointer-events: none;
-    background-color: black;
 
-    // TODO: Use theme colors!
+    @include mdc-theme-prop(background-color, text-primary-on-light);
+
     .mdc-toolbar & {
-      background-color: white;
+      @include mdc-theme-prop(background-color, text-primary-on-dark);
     }
   }
 
@@ -213,7 +182,6 @@ $_md-tabs-scroller-indicator-width: 48px;
     opacity: .38;
   }
 
-  // NOT WORKING, FIX
   &--active,
   &:not(.mdc-tab--active):active::after {
     opacity: .87;
@@ -221,9 +189,10 @@ $_md-tabs-scroller-indicator-width: 48px;
 }
 
 .mdc-tab--active {
-  color: $md-tabs-active-text-color;
+  @include mdc-theme-prop(color, text-primary-on-light);
 }
 
+// postcss-bem-linter: define tabs-scroller
 .mdc-tabs-scroller {
   display: flex;
   box-sizing: border-box;
@@ -245,19 +214,17 @@ $_md-tabs-scroller-indicator-width: 48px;
   }
 
   &__indicator {
-    @include anchor-reset;
+    @include mdc-anchor-reset;
 
     display: flex;
     align-items: center;
     justify-content: center;
-
-    width: $_md-tabs-scroller-indicator-width;
+    width: $mdc-tabs-scroller-indicator-width;
     height: 100%;
 
-    // NOTE: should correspond with theme
-    background-color: white;
+    @include mdc-theme-prop(background-color, text-primary-on-dark);
+    @include mdc-anchor-reset;
 
-    @include anchor-reset;
     &__inner {
       text-decoration: inherit;
       cursor: inherit;
@@ -274,57 +241,8 @@ $_md-tabs-scroller-indicator-width: 48px;
   }
 
   &__indicator--disabled {
-    opacity: 0.38;
+    opacity: 0;
     pointer-events: none;
-  }
-}
-
-.mdc-tabs-scroller--visible {
-  //padding: 0 $_md-tabs-scroller-indicator-width;
-
-  // .mdc-tabs-scroller__indicator {
-  //   visibility: visible;
-  //   z-index: 1;
-  // }
-}
-
-section + section {
-  margin-top: 40px;
-}
-
-.panels {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-top: 8px;
-}
-
-.panel {
-  display: none;
-  &.active {
-    display: block;
-  }
-}
-
-.dots {
-  display: flex;
-  justify-content: flex-start;
-  margin-top: 4px;
-  padding-bottom: 16px;
-}
-
-.dot {
-  margin-right: 8px;
-  border-radius: 50%;
-  border: 1px solid #ccc;
-  width: 20px;
-  height: 20px;
-  &:last-child {
-    margin-right: 0;
-  }
-  &.active {
-    background-color: var(--mdc-theme-primary);
-    border-color: var(--mdc-theme-primary);
   }
 }
 

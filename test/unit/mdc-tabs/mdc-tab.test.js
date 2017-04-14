@@ -20,7 +20,6 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 import {createMockRaf} from '../helpers/raf';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
-import {strings} from '../../../packages/mdc-tabs/tab/constants';
 import {MDCTab} from '../../../packages/mdc-tabs/tab';
 
 function getFixture() {
@@ -46,7 +45,7 @@ test('attachTo returns a component instance', () => {
 if (supportsCssVariables(window)) {
   test('#destroy cleans up ripple on tab', () => {
     const raf = createMockRaf();
-    const {fixture, root, component} = setupTest();
+    const {root, component} = setupTest();
 
     raf.flush();
 
@@ -106,14 +105,12 @@ test('adapter#getOffsetLeft returns the distance that '+
 });
 
 test('adapter#notifySelected emits MDCTab:selected', () => {
-  test('adapter#notifyAccept emits MDCDialog:accept', () => {
-    const {component} = setupTest();
+  const {component} = setupTest();
 
-    const handler = td.func('acceptHandler');
+  const handler = td.func('acceptHandler');
 
-    component.listen('MDCTab:selected', handler);
-    component.getDefaultFoundation().adapter_.notifySelected();
+  component.listen('MDCTab:selected', handler);
+  component.getDefaultFoundation().adapter_.notifySelected();
 
-    td.verify(handler(td.matchers.anything()));
-  });
+  td.verify(handler(td.matchers.anything()));
 });

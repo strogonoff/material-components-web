@@ -17,7 +17,7 @@ import {assert} from 'chai';
 import td from 'testdouble';
 
 import {setupFoundationTest} from '../helpers/setup';
-import {verifyDefaultAdapter, captureHandlers} from '../helpers/foundation';
+import {verifyDefaultAdapter} from '../helpers/foundation';
 
 import {cssClasses} from '../../../packages/mdc-tabs/tab/constants';
 import MDCTabFoundation from '../../../packages/mdc-tabs/tab/foundation';
@@ -42,7 +42,7 @@ function setupTest() {
   return {foundation, mockAdapter};
 }
 
-test ('#init registers tab interaction handlers', () => {
+test('#init registers tab interaction handlers', () => {
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
 
@@ -62,7 +62,6 @@ test('#destroy deregisters tab interaction handlers', () => {
 
 test('#setActive adds active class when isActive is true', () => {
   const {foundation, mockAdapter} = setupTest();
-  const {isA} = td.matchers;
 
   foundation.setActive(true);
   td.verify(mockAdapter.addClass(cssClasses.ACTIVE));
@@ -70,7 +69,6 @@ test('#setActive adds active class when isActive is true', () => {
 
 test('#setActive removes active class when isActive is false', () => {
   const {foundation, mockAdapter} = setupTest();
-  const {isA} = td.matchers;
 
   foundation.setActive(false);
   td.verify(mockAdapter.removeClass(cssClasses.ACTIVE));
@@ -83,7 +81,7 @@ test('#setPreventDefaultOnClick sets preventDefaultOnClick_' +
    foundation.setPreventDefaultOnClick(false);
 
    assert.isFalse(foundation.preventDefaultOnClick_);
- })
+});
 
 test('#measureSelf sets computedWidth_ and computedLeft_ for tab', () => {
   const {foundation, mockAdapter} = setupTest();
