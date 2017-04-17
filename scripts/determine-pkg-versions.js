@@ -141,6 +141,8 @@ function pickBestVersionInfo(pkg) {
       possibleNewChangeType = semver.major(pkg.version) === 0 ? VersionType.MINOR : VersionType.MAJOR;
     } else if (commitInfo.type === 'feat') {
       possibleNewChangeType = VersionType.MINOR;
+    } else if (commitInfo.type === 'docs') {
+      return currentBest;
     } else {
       // fix, docs, style (refers to coding style), refactor (non-breaking change), chore, ...
       possibleNewChangeType = VersionType.PATCH;
